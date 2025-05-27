@@ -26,17 +26,20 @@ class Dense:
         self.activation = get_activation(self.activation_type)
         self.weight_init = weight_init
         self.bias = np.random.randn(self.n_of_neurons, 1) if bias else np.zeros((self.n_of_neurons, 1))
+        self.weights = np.array([])
 
     def init_weights(self, prev_n_of_neurons):
         self.weights = get_weight_init(self.weight_init, (self.n_of_neurons, prev_n_of_neurons))
-
-    
+        
     def __repr__(self):
         return f"Dense(n_of_neurons={self.n_of_neurons},bias={True if self.bias.any() else False},activation={self.activation_type})"
     
     def forward(self, inputs):
-        z = np.dot(self.weights, inputs.T) + self.bias
+        if self.weights.shape[0] == 0:
+            return inputs
+        z = np.dot(self.weights, inputs) + self.bias
         self.output = self.activation(z) if self.activation is not None else z
-        return self.output.T
+        return self.output
+
 
 
