@@ -1,5 +1,5 @@
 import numpy as np
-
+from object import *
 
 def get_activation(_type):
     activations = {
@@ -19,8 +19,9 @@ def get_weight_init(_type, _shape):
     return weight_inits.get(_type.lower(), lambda shape: np.random.randn(*shape))(_shape)
 
 
-class Dense:
+class Dense(Object):
     def __init__(self, n_of_neurons,  bias=False, activation_function="ReLU", weight_init="zero"):
+        super().__init__("Dense")
         self.n_of_neurons = n_of_neurons
         self.activation_type = activation_function
         self.activation = get_activation(self.activation_type)
